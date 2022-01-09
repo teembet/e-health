@@ -44,6 +44,7 @@ const VerticalLayout = ({ children }: Props) => {
     async function fetchMenuData() {
       const result = await axios('/data/menu.json');
       setMenuData(result.data);
+      
     }
 
     fetchMenuData().catch((err) => console.log('Server Error', err));
@@ -78,7 +79,7 @@ const VerticalLayout = ({ children }: Props) => {
       background={settings.sidebarBg}
       orientation='vertical'
     >
-      <Logo src={LogoSvg} />
+      {/* <Logo src={LogoSvg} /> */}
 
       <Menu
         onCloseSidebar={onSidebarToggle}
