@@ -46,7 +46,7 @@ const VerticalLayout = ({ children }: Props) => {
  
   useEffect(() => {
 
-    if(user["role"]==='Doctor' || user["role"]==='Nurse'){
+    if(user && user["role"]==='Doctor' || user["role"]==='Nurse'){
       console.log(user,"this")
    setAllowed(true)
     } else{
