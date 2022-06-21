@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import axios from 'axios';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 
 import BaseLayout from '../base/BaseLayout';
 
@@ -41,25 +41,29 @@ const VerticalLayout = ({ children }: Props) => {
 
   const [menuData, setMenuData] = useState([]);
   const [allowed, setAllowed] = useState(false);
-  const user=useSelector((state:AppState)=>state.login["user"]);
+  const user = useSelector((state: AppState) => state.login['user']);
 
- 
   useEffect(() => {
-
-    if(user && user["role"]==='Doctor' || user["role"]==='Nurse'){
-      console.log(user,"this")
-   setAllowed(true)
-    } else{
-setAllowed(false)
+    if (
+      (user && user['role'] === 'Doctor') ||
+      (user && user['role'] === 'Nurse') ||
+      (user && user['role'] === 'RecordAdmin')
+    ) {
+      setAllowed(true);
+    } else {
+      setAllowed(false);
     }
     async function fetchMenuData() {
       const result = await axios('/data/menu.json');
       setMenuData(result.data);
-      
     }
 
     fetchMenuData().catch((err) => console.log('Server Error', err));
-  }, []);
+  });
+
+  if (!user) {
+    return <Redirect to='/public/sign-in' />;
+  }
 
   const nav = (
     <Navbar
@@ -99,7 +103,7 @@ setAllowed(false)
         data={menuData}
       />
 
-     {allowed && <AddPatient />}
+      {allowed && <AddPatient />}
 
       <Menu className='assistant-menu' orientation='vertical'>
         <NavLink className='link' to='/vertical/settings' activeClassName='active' replace>

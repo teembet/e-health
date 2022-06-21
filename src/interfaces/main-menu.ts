@@ -1,29 +1,30 @@
 export interface IMenuItem {
-  title: string,
-  icon?: IMenuItemIcon,
-  color?: string,
-  active?: boolean,
-  disabled?: boolean,
-  groupTitle?: boolean,
-  routing?: string,
-  externalLink?: string,
+  title: string;
+  icon?: IMenuItemIcon;
+  color?: string;
+  active?: boolean;
+  disabled?: boolean;
+  groupTitle?: boolean;
+  routing?: string;
+  externalLink?: string;
   layout?: string;
-  sub?: IMenuItemSub[],
+  allowedRoles: [];
+  sub?: IMenuItemSub[];
 }
 
 export interface IMenuItemIcon {
-  class?: string,
-  color?: string,
-  bg?: string
+  class?: string;
+  color?: string;
+  bg?: string;
 }
 export interface IMenuItemSub {
-  title: string,
-  icon?: string,
-  color?: string,
-  active?: boolean,
-  disabled?: boolean,
-  routing: string,
-  externalLink?: string,
+  title: string;
+  icon?: string;
+  color?: string;
+  active?: boolean;
+  disabled?: boolean;
+  routing: string;
+  externalLink?: string;
   layout?: string;
-  sub?: IMenuItemSub[]
+  sub?: IMenuItemSub[];
 }

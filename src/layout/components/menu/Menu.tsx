@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { IMenuItem, IMenuItemSub } from '../../../interfaces/main-menu';
 
@@ -24,10 +24,10 @@ type RouterProps = {
   location: Location;
 };
 
-type Props = RouterProps & MenuProps | any;
+type Props = (RouterProps & MenuProps) | any;
 
 const haveActive = (sub: IMenuItemSub[], route: string) =>
-  !!sub.find(item => item.routing === route);
+  !!sub.find((item) => item.routing === route);
 
 const Menu = ({
   data,
@@ -39,7 +39,7 @@ const Menu = ({
   opened
 }: Props) => {
   const [menu, setMenu] = useState<IMenuItem[]>([]);
-
+  const userRole = useSelector((state: any) => state.login.user.role);
   useEffect(() => {
     setMenu(data);
   }, [data]);
@@ -48,7 +48,7 @@ const Menu = ({
     const currentRoute = location.pathname.split('/')[2];
 
     const updatedMenu = data
-      ? data.map(item => {
+      ? data.map((item) => {
           if (item.sub) {
             return { ...item, active: haveActive(item.sub, currentRoute) };
           }
@@ -103,7 +103,7 @@ const Menu = ({
       );
     }
 
-    return (
+    return userRole && item?.allowedRoles.some((r) => userRole.includes(r)) ? (
       <SimpleItem
         key={i}
         icon={item.icon}
@@ -111,7 +111,7 @@ const Menu = ({
         title={item.title}
         routing={item.routing}
       />
-    );
+    ) : null;
   });
 
   return (

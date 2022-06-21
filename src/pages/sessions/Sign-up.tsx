@@ -1,7 +1,7 @@
-import React,{ChangeEvent,useState,useEffect} from 'react';
-import * as userActions  from '../../redux/auth/actions';
-import { useDispatch,useSelector} from "react-redux";
-import { Button, Form, Input, Switch,Select } from 'antd';
+import React, { ChangeEvent, useState, useEffect } from 'react';
+import * as userActions from '../../redux/auth/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button, Form, Input, Switch, Select } from 'antd';
 import PublicLayout from '../../layout/public/Public';
 import { Link } from 'react-router-dom';
 import { useForm } from 'antd/es/form/Form';
@@ -10,69 +10,61 @@ import { AppState, store } from '../../redux/store';
 const { Item } = Form;
 
 const SignUp = () => {
-  const users=useSelector((state:AppState)=>state.registration)
- 
-const [form] = useForm();
+  const users = useSelector((state: AppState) => state.registration);
 
-const dispatch = useDispatch();
-const [inputValues,setInputValues]=useState<IUser>()
-// const [users,setUsers]=useState("")
+  const [form] = useForm();
+
+  const dispatch = useDispatch();
+  const [inputValues, setInputValues] = useState<IUser>();
+  // const [users,setUsers]=useState("")
 
   interface IUser {
-    name:string;
+    name: string;
     email: string;
-    password:string;
-    role:string
+    password: string;
+    role: string;
     // submitted:false;
   }
-//   useEffect(() => {
-  
-//     // When state will be updated(in our case, when items will be fetched), 
-//     // we will update local component state and force component to rerender 
-//     // with new data.
+  //   useEffect(() => {
 
-// })
-const signUp = () => {
-  const { name,email, password,role } =inputValues;
+  //     // When state will be updated(in our case, when items will be fetched),
+  //     // we will update local component state and force component to rerender
+  //     // with new data.
 
+  // })
+  const signUp = () => {
+    const { name, email, password, role } = inputValues;
 
-    if (email !== '' && password !== '' && name !=='' && role !=='')  {
-    form
-      .validateFields()
-      .then(() => {
-        const user=  users.find(x => x.email === email)
-        if (user && user.email===email) {
-          console.log("user already exist");
-          //toast error here
-          
-        }else{
-          dispatch(userActions.register(inputValues));
-          dispatch(userActions.login(inputValues));
-         // dispatch(userActions.createUser(inputValues))
-         //  setUsers((store.getState().registration))
-     
-         
-           navigateHome();
-        }
-    
-       } )
-      .catch((error) => console.log(error));
-      }else{
-//toast input error
-      }
+    if (email !== '' && password !== '' && name !== '' && role !== '') {
+      form
+        .validateFields()
+        .then(() => {
+          const user = users.find((x) => x.email === email);
+          if (user && user.email === email) {
+            console.log('user already exist');
+            //toast error here
+          } else {
+            dispatch(userActions.register(inputValues));
+            dispatch(userActions.login(inputValues));
+            // dispatch(userActions.createUser(inputValues))
+            //  setUsers((store.getState().registration))
+
+            navigateHome();
+          }
+        })
+        .catch((error) => console.log(error));
+    } else {
+      //toast input error
+    }
   };
   const handleGenderSelect = (value) => {
-   
-    setInputValues({...inputValues,"role":value});
- 
-  }
+    setInputValues({ ...inputValues, role: value });
+  };
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
-    setInputValues({ ...inputValues,[e.target.name]: e.target.value });
-    
+    setInputValues({ ...inputValues, [e.target.name]: e.target.value });
   };
-
 
   return (
     <PublicLayout bgImg={`${window.origin}/content/register-page.jpg`}>
@@ -80,7 +72,7 @@ const signUp = () => {
       <p className='text-color-200'>Create your Account</p>
 
       <Form form={form} layout='vertical' className='mb-5'>
-        <Item name='name' rules={[{ required: true, message:<></>}]}>
+        <Item name='name' rules={[{ required: true, message: <></> }]}>
           <Input placeholder='Name' onChange={handleChange} name='name' />
         </Item>
 
@@ -98,19 +90,18 @@ const signUp = () => {
           <Input placeholder='Password' type='password' onChange={handleChange} name='password' />
         </Item>
 
-              <Select
-                placeholder='Role'
-          
-                onChange={handleGenderSelect}
-                // className={hasError('gender')}
-                // onBlur={() => setFieldTouched('gender')}
-              >
-                <Select.Option value='Doctor'>Doctor</Select.Option>
-                <Select.Option value='Nurse'>Nurse</Select.Option>
-                <Select.Option value='Pharmacy'>Pharmacy</Select.Option>
-                <Select.Option value='Lab'>Lab</Select.Option>
-              </Select>
-         
+        <Select
+          placeholder='Role'
+          onChange={handleGenderSelect}
+          // className={hasError('gender')}
+          // onBlur={() => setFieldTouched('gender')}
+        >
+          <Select.Option value='Doctor'>Doctor</Select.Option>
+          <Select.Option value='Nurse'>Nurse</Select.Option>
+          <Select.Option value='Pharmacy'>Pharmacy</Select.Option>
+          <Select.Option value='Lab'>Lab</Select.Option>
+          <Select.Option value='RecordAdmin'>RecordAdmin</Select.Option>
+        </Select>
 
         <div className='d-flex align-items-center mb-4 mt-5'>
           <Switch defaultChecked /> <span className='ml-2'>I agree to the Terms and Privacy.</span>
